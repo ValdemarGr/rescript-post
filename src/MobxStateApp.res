@@ -31,20 +31,27 @@ module SubComponent = {
   })
 }
 
+module ShowSum = {
+  @react.component
+  let make = Mobx.observer((~getSum: unit => int) => {
+    <> <div> {`Sum is ${getSum()->Js.Int.toString}`->React.string} </div> </>
+  })
+}
+
 @react.component
 let make = Mobx.observer(() => {
   let state = Mobx.useLocalObservable(() =>
     Belt.Array.range(0, 30)->Js.Array2.map(x => (ref(x), ref(x->Js.Int.toString)))
   )
 
-  let evenAgeSum = Mobx.useComputedNow(() =>
+  let evenAgeSum = Mobx.useComputed(() =>
     state
     ->Js.Array2.filteri((_, i) => mod(i, 2) == 0)
     ->Js.Array2.reduce((accum, (next, _)) => accum + next.contents, 0)
   )
 
   <>
-    {`Sum is ${evenAgeSum->Js.Int.toString}`->React.string}
+    <ShowSum getSum={evenAgeSum} />
     {state
     ->Js.Array2.mapi(((a, n), i) => {
       <SubComponent key={i->Js.Int.toString} name={n} age={a} /> // indexes are stable
