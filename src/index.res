@@ -1,6 +1,6 @@
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MobxStateApp />
   </React.StrictMode>,
   ReactDOM.querySelector("#root")->Belt.Option.getExn,
 )
