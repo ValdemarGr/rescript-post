@@ -3,8 +3,14 @@ external observer: React.component<'props> => React.component<'props> = "observe
 
 @module("mobx-react-lite") external useLocalObservable: (unit => 'a) => 'a = "useLocalObservable"
 
-@module("mobx") external _veryUnsafeAction: ('a => 'b) => 'c = "action"
-let action: ('a => 'b) => 'a => 'b = _veryUnsafeAction
+@module("mobx") external actionU: ((. 'a) => 'b) => ((. 'a) => 'b) = "action"
+let action1: ('a => 'b) => ('a => 'b) = cb => {
+    let act = actionU((. a) => cb(a))
+
+    a => act(. a)
+}
+
+let action = action1
 
 type suspended<'a> = {
     get: ((. unit) => 'a)
