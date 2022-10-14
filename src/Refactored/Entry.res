@@ -8,9 +8,7 @@ module ShowName = {
       <br />
       {`My name is ${name.contents}`->React.string}
       <br />
-      <input
-        name="name" onChange={action(x => name := ReactEvent.Form.target(x)["value"])}
-      />
+      <input name="name" onChange={action(x => name := ReactEvent.Form.target(x)["value"])} />
     </>
   })
 }
@@ -22,7 +20,13 @@ module ShowAge = {
       <br />
       {`My age is ${toString(age.contents)}`->React.string}
       <br />
-      <input name="age" onChange={action(x => age := ReactEvent.Form.target(x)["value"])} />
+      <input
+        name="age"
+        onChange={action(x =>
+          age :=
+            Belt.Int.fromString(ReactEvent.Form.target(x)["value"])->Belt.Option.getWithDefault(0)
+        )}
+      />
     </>
   })
 }
